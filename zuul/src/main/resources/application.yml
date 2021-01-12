@@ -1,0 +1,17 @@
+server:
+  port: 8710
+spring:
+  application:
+    name: client‐feign
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+zuul:
+  routes:
+    api-a:
+      path: /api/**
+      serviceId: client‐feign
+    api-b:
+      path: /bpi/**
+      serviceId: client‐feign
