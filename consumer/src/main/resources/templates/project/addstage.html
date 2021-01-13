@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- 引入bootstap的css文件 -->
+    <link rel="stylesheet" href="../js/bootstrap/bootstrap3/css/bootstrap.css">
+    <link rel="stylesheet" href="../js/bootstrap/bootstrap3/css/bootstrap-theme.css">
+
+    <!-- 引入jquery文件 -->
+    <script type="text/javascript" src="../js/jquery.min.js"></script>
+    <!-- 引入bootstrap的js文件 -->
+    <script type="text/javascript" src="../js/bootstrap/bootstrap3/js/bootstrap.min.js"></script>
+    <!-- 引入弹框的js文件 -->
+    <script type="text/javascript" src="../js/bootstrap/bootstrap-bootbox/bootbox.js"></script>
+    <!-- 引入表格的css和js文件 -->
+    <link rel="stylesheet" href="../js/bootstrap/bootstrap-table/bootstrap-table.css">
+    <script src="../js/bootstrap/bootstrap-table/bootstrap-table.js"></script>
+    <script src="../js/bootstrap/bootstrap-table/locale/bootstrap-table-zh-CN.js"></script>
+
+    <script src="../js/bootstrap/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+    <script src="../js/bootstrap/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+    <link rel="stylesheet" href="../js/bootstrap/bootstrap-datetimepicker/css/bootstrap-datetimepicker.css">
+</head>
+<body>
+
+<div style="border-color: #ddd;border-width: 1px;">
+    <div class="container-fluid">
+        <form id="userForm">
+            <input type="hidden" name="proid" id="proid">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-2">
+                        <label for="stage">序号:</label>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="text" class="form-control" id="stage" name="stage" placeholder="输入项目编号">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-2">
+                        <label for="stadate">开始日期:</label>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="text" class="form-control date" id="stadate" name="stadate">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-2">
+                        <label for="seeto">阶段负责人:</label>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="text" name="seeto" id="seeto" class="form-control">
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+<script>
+
+    $('.date').datetimepicker({
+        language: 'zh-CN',//显示中文
+        format: 'yyyy-mm-dd',//显示格式
+        minView: "month",//设置只显示到月份
+        initialDate: new Date(),//初始化当前日期
+        autoclose: true,//选中自动关闭
+        todayBtn: true//显示今日按钮
+    });
+</script>
+</html>

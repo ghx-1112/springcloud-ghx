@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- mapper标签要指定namespace属性，不然会报错，可看做包名  dao层接口类路径-->
+<mapper namespace="com.jk.dao.ProjectDao">
+
+
+    <sql id="prosql">
+        <where>
+            <if test="projectBean.pronumber !=null and projectBean.pronumber!=''">
+                and pro.pronumber = #{projectBean.pronumber}
+            </if>
+            <if test="projectBean.prostatus!=null and projectBean.prostatus != 0">
+                and pro.prostatus = #{projectBean.prostatus}
+            </if>
+        </where>
+    </sql>
+
+    <!-- 导航树查询 -->
+    <select id="findtree" resultType="com.jk.pojo.TreeBean">
+        select * from d_tree where pid = #{pid}
+    </select>
+    <!-- 项目表查询条数 -->
+    <select id="findProjectCount" resultType="int">
+        select count(1) from d_project pro
+        <include refid="prosql"></include>
+    </select>
+    <!-- 项目表分页查询 -->
+    <select id="findProjectPage" resultType="com.jk.pojo.ProjectBean">
+        select * from d_project pro
+        <include refid="prosql"></include>
+        limit #{start},#{rows}
+    </select>
+    <insert id="addProject" parameterType="com.jk.pojo.ProjectBean" useGeneratedKeys="true" keyProperty="proid">
+        insert into d_project(pronumber,proname,prodescribe,proprincipal,protechlead,proproduct,protest,promarketing,procurrent,prostatus,prostartdate,proenddate)
+            values(#{pronumber},#{proname},#{prodescribe},#{proprincipal},#{protechlead},#{proproduct},#{protest},#{promarketing},#{procurrent},1,#{prostartdate},#{proenddate})
+    </insert>
+</mapper>

@@ -1,11 +1,13 @@
 package com.jk.service.impl;
 
 import com.jk.dao.ProjectDao;
+import com.jk.pojo.ProjectBean;
 import com.jk.pojo.TreeBean;
 import com.jk.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -34,5 +36,23 @@ public class ProjectServiceimpl implements ProjectService {
             }
         }
         return list;
+    }
+
+    @Override
+    public HashMap<String, Object> findProjectPage(Integer page, Integer rows, ProjectBean projectBean) {
+        int total = projectDao.findProjectCount(projectBean);
+        int start = (page-1)*rows;
+        List<ProjectBean> list = projectDao.findProjectPage(start,rows,projectBean);
+        HashMap<String, Object> map = new HashMap<String, Object>();
+        map.put("total",total);
+        map.put("rows",list);
+        return map;
+    }
+
+    @Override
+    public void addProject(ProjectBean projectBean) {
+        projectDao.addProject(projectBean);//新增项目表
+        System.out.println(projectBean);
+        //projectDao.addProjectStage(projectBean.getStageList());
     }
 }

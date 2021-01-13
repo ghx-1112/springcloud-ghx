@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- 引入bootstap的css文件 -->
+    <link rel="stylesheet" href="../js/bootstrap/bootstrap3/css/bootstrap.css">
+    <link rel="stylesheet" href="../js/bootstrap/bootstrap3/css/bootstrap-theme.css">
+
+    <!-- 引入jquery文件 -->
+    <script type="text/javascript" src="../js/jquery.min.js"></script>
+    <!-- 引入bootstrap的js文件 -->
+    <script type="text/javascript" src="../js/bootstrap/bootstrap3/js/bootstrap.min.js"></script>
+    <!-- 引入弹框的js文件 -->
+    <script type="text/javascript" src="../js/bootstrap/bootstrap-bootbox/bootbox.js"></script>
+    <!-- 引入表格的css和js文件 -->
+    <link rel="stylesheet" href="../js/bootstrap/bootstrap-table/bootstrap-table.css">
+    <script src="../js/bootstrap/bootstrap-table/bootstrap-table.js"></script>
+    <script src="../js/bootstrap/bootstrap-table/locale/bootstrap-table-zh-CN.js"></script>
+
+    <script src="../js/bootstrap/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+    <script src="../js/bootstrap/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+    <link rel="stylesheet" href="../js/bootstrap/bootstrap-datetimepicker/css/bootstrap-datetimepicker.css">
+</head>
+<body>
+    <div id="toolbar">
+        <form class="form-inline">
+            <div class="form-group">
+                <label for="pronumber">项目编号：</label>
+                <input type="text" class="form-control" id="pronumber" placeholder="项目编号">
+                <label>项目状态：</label>
+                <select type="text" id="prostatus" class="form-control">
+                    <option value="0">--请选择--</option>
+                    <option value="1">进行中</option>
+                    <option value="2">已完成</option>
+                    <option value="3">已延迟</option>
+                </select>
+            </div>
+            <button type="button" onclick="searchProject()" class="btn btn-success glyphicon glyphicon-search">搜索</button>
+            <button type="button" onclick="openProject()" class="btn btn-warning glyphicon glyphicon-plus">新增</button>
+        </form>
+    </div>
+    <table class="table" id="proTable"></table>
+</body>
+
+<script type="text/javascript">
+    $(function(){
+        initProjectTable();
+    })
+    function toup(movicid){
+        bootbox.dialog({
+            title:"添加影片",
+            message:createAddContent("/test/toAdd.do"),
+            buttons : {
+                "success" : {
+                    "label" : "<i class='icon-ok'></i> 保存",
+                    "className" : "btn-sm btn-success",
+                    "callback" : function() {
+                        //提交表单数据：保存
+                        $.ajax({
+                            url:'<%=path%>/test/addmovic.do',//后台请求地址
+                            type:'post',
+                            data:$("#movicForm").serialize(),//表单序列化
+                            //dataType:'json',
+                            success:function(){
+                                //刷新表格
+                                searMovic();
+                            }
+                        });
+                    }
+                },
+                "cancel" : {
+                    "label" : "<i class='icon-info'></i> 取消",
+                    "className" : "btn-sm btn-danger",
+                    "callback" : function() {
+
+                    }
+                }
+            }
+        });
+
+
+        $.ajax({
+            url:"<%=path%>/test/toup.do",
+            data:{movicid:movicid},
+            success:function(data){
+
+                initprovince();//加载省数据
+                intiCity(data.province);
+                inittype();//加载类型
+
+
+                //openMovic(data);
+                $("#movicid").val(data.movicid);
+                $("#name").val(data.movicname);
+                $("#moviccount").val(data.moviccount);
+                $("#movicdate").val(data.movicdate);
+                $("#movicscore").val(data.movicscore);
+                $("#type").val(data.typeid);
+                $("#province").val(data.province);
+                $("#city").val(data.city);
+                $("#movicinfo").val(data.movicinfo);
+
+                $("#testimg").val(data.movicimg);
+                //回显图片
+                //	alert(data.movicimg)
+                uploadFile(data.movicimg);
+            }
+        })
+    }
+
+
+
+
+    function delmovic(){
+        var arr = $("#myTable").bootstrapTable("getSelections");
+        var ids = "";
+        for (var i = 0; i < arr.length; i++) {
+            ids +=(ids==""?arr[i].movicid:","+arr[i].movicid);
+        }
+        alert(ids)
+        if (ids == "") {
+            bootbox.alert({
+                size: "small",
+                title: "提示",
+                message: "请至少选择一条！！",
+                callback: function(){}
+            });
+            return;
+        }
+        del(ids);
+    }
+
+    function del(id){
+        bootbox.confirm({
+            size: "small",
+            title:"提示",
+            message: "是否确认删除?",
+            buttons: {
+                confirm: {
+                    label: '确定',
+                    className: 'btn-success'
+                },
+                cancel: {
+                    label: '取消',
+                    className: 'btn-danger'
+                }
+            },
+            callback: function(result){
+                if(result){
+                    $.ajax({
+                        url:"<%=path%>/test/delmovic.do",
+                        type:"post",
+                        data:{ids:id},
+                        success:function(){
+                            bootbox.alert({
+                                size: "small",
+                                title: "提示",
+                                message: "删除成功！！！",
+                                callback: function(){}
+                            });
+                            searMovic();
+                        }
+                    });
+                }
+            }
+        })
+    }
+
+    function goumai(lotid) {
+        bootbox.dialog({
+            title: "购买车位",
+            message: createAddContent("../test/togoumai"),
+            buttons: {
+                "success": {
+                    "label": "<i class='icon-ok'></i> 保存",
+                    "className": "btn-sm btn-success",
+                    "callback": function () {
+                        //提交表单数据：保存
+                        $.ajax({
+                            url: '../test/goumai',//后台请求地址
+                            type: 'post',
+                            data: $("#goupark").serialize(),//表单序列化
+                            //dataType:'json',
+                            success: function (data) {
+                                //刷新表格
+                                searMovic();
+                            }
+                        });
+                    }
+                },
+                "cancel": {
+                    "label": "<i class='icon-info'></i> 取消",
+                    "className": "btn-sm btn-danger",
+                    "callback": function () {
+
+                    }
+                }
+            }
+        });
+
+        $.ajax({
+            url:"../test/findparkByid",
+            data:{lotid:lotid},
+            success:function (data){
+                $("#lotid").val(data.lotid);
+                $("#parkid").text(data.parkid);
+                $("#lotname").text(data.lotname);
+                $("#lotprice").text(data.lotprice);
+            }
+        })
+
+    }
+    
+
+    var res;
+    function createAddContent(url){
+        $.ajax({
+            url:url,
+            async:false,//同步，默认是：异步
+            success:function(data){
+                res = data;
+            }
+        });
+        return res;
+    }
+    function openProject(){
+        location.href="../page/toproadd";
+        return ;
+        bootbox.dialog({
+            title:"新增项目",
+            message:createAddContent("../page/toproadd"),
+            buttons : {
+                "success" : {
+                    "label" : "<i class='icon-ok'></i> 保存",
+                    "className" : "btn-sm btn-success",
+                    "callback" : function() {
+                        //提交表单数据：保存
+                        $.ajax({
+                            url:'../page/toproadd',//后台请求地址
+                            type:'post',
+                            data:$("#parkinglot").serialize(),//表单序列化
+                            //dataType:'json',
+                            success:function(data){
+                                bootbox.alert({
+                                    size: "small",
+                                    title: "提示",
+                                    message: data,
+                                    callback: function(){
+                                        return;
+                                    }
+                                });
+                                //刷新表格
+                                searMovic();
+                            }
+                        });
+                    }
+                },
+                "cancel" : {
+                    "label" : "<i class='icon-info'></i> 取消",
+                    "className" : "btn-sm btn-danger",
+                    "callback" : function() {
+
+                    }
+                }
+            }
+        });
+        //加载停车场
+        //initpark();
+    }
+
+    function searchProject(){
+        $("#proTable").bootstrapTable("refresh")
+    }
+    function initProjectTable(){
+        $("#proTable").bootstrapTable({
+            url:"../project/findProjectPage",
+            toolbar:'#toolbar',
+            pagination:true,
+            pageList:[5,10,15,20],
+            pageNumber:1,
+            pageSize:5,
+            sidePagination:"server",
+            queryParams:function(){
+                return{
+                    page:this.pageNumber,
+                    rows:this.pageSize,
+                    pronumber: $("#pronumber").val(),
+                    prostatus: $("#prostatus").val()
+                };
+            },
+            columns:[
+                {checkbox:true},
+                {field:"proid",title:"序号"},
+                {field:"pronumber",title:"项目编号"},
+                {field:"proname",title:"项目名称"},
+                {field:"proprincipal",title:"项目负责人"},
+                {field:"procurrent",title:"当前阶段"},
+                {field:"prostatus",title:"项目状态",formatter:function(value,rows,index){
+                    if (value == 1){
+                        return "进行中";
+                    }
+                    if (value == 2){
+                        return "已完成";
+                    }
+                    if (value == 3){
+                        return "已延迟";
+                    }
+                    }},
+                {field:"prostartdate",title:"开始日期"},
+                {field:"xx",title:"操作",formatter:function(value,rows,index){
+                        var str ="";
+                            str += "  <a href='javascript:goumai("+rows.lotid+")'>跟进</a>";
+                            str += "  <a href='javascript:tui("+rows.lotid+")'>删除</a>";
+                            str += "  <a href='javascript:findProjectInfo("+rows.lotid+")'>详情</a>";
+                        return str;
+                    }}
+            ]
+        })
+    }
+
+    </script>
+</html>

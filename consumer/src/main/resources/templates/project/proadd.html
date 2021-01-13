@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- 引入bootstap的css文件 -->
+    <link rel="stylesheet" href="../js/bootstrap/bootstrap3/css/bootstrap.css">
+    <link rel="stylesheet" href="../js/bootstrap/bootstrap3/css/bootstrap-theme.css">
+
+    <!-- 引入jquery文件 -->
+    <script type="text/javascript" src="../js/jquery.min.js"></script>
+    <!-- 引入bootstrap的js文件 -->
+    <script type="text/javascript" src="../js/bootstrap/bootstrap3/js/bootstrap.min.js"></script>
+    <!-- 引入弹框的js文件 -->
+    <script type="text/javascript" src="../js/bootstrap/bootstrap-bootbox/bootbox.js"></script>
+    <!-- 引入表格的css和js文件 -->
+    <link rel="stylesheet" href="../js/bootstrap/bootstrap-table/bootstrap-table.css">
+    <script src="../js/bootstrap/bootstrap-table/bootstrap-table.js"></script>
+    <script src="../js/bootstrap/bootstrap-table/locale/bootstrap-table-zh-CN.js"></script>
+
+    <script src="../js/bootstrap/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+    <script src="../js/bootstrap/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+    <link rel="stylesheet" href="../js/bootstrap/bootstrap-datetimepicker/css/bootstrap-datetimepicker.css">
+
+    <style>
+        .btn{
+            margin-right: 30px;
+        }
+    </style>
+
+</head>
+<body>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <p class="navbar-text navbar-right">
+            <button type="button" onclick="cancel()" class="btn btn-success glyphicon glyphicon-search">取消</button>
+            <button type="button" onclick="addProject()" class="btn btn-warning glyphicon glyphicon-plus">保存</button>
+    </div>
+</nav>
+<div style="border-color: #ddd;border-width: 1px;">
+    <div class="container-fluid">
+        <form id="projectForm">
+            <input type="hidden" name="proid" id="proid">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-1">
+                        <label for="pronumber">*项目编号:</label>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="text" class="form-control" id="pronumber" name="pronumber" placeholder="输入项目编号">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-1">
+                        <label for="proname">项目名称:</label>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="text" class="form-control" id="proname" name="proname">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-1">
+                        <label>项目描述:</label>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="prodescribe" name="prodescribe" id="info" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-1">
+                        <label>项目负责人:</label>
+                    </div>
+                    <div class="col-md-2">
+                        <input type="text" name="proprincipal" id="proprincipal" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-1">
+                        <label>技术负责人:</label>
+                    </div>
+                    <div class="col-md-2">
+                        <input type="text" name="protechlead" id="protechlead" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-1">
+                        <label>产品负责人:</label>
+                    </div>
+                    <div class="col-md-2">
+                        <input type="text" name="proproduct" id="proproduct" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-1">
+                        <label>测试负责人:</label>
+                    </div>
+                    <div class="col-md-2">
+                        <input type="text" name="protest" id="protest" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-1">
+                        <label>市场负责人:</label>
+                    </div>
+                    <div class="col-md-2">
+                        <input type="text" name="promarketing" id="promarketing" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-1">
+                        <label>*项目开始日期:</label>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="text" name="prostartdate" id="prostartdate" class="form-control date">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-1">
+                        <label>*项目截止日期:</label>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="text" name="proenddate" id="proenddate" class="form-control date">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-1">
+                        <label>阶段计划表:</label>
+                    </div>
+                    <div class="col-md-4">
+                        <a onclick="addsatge()" >新增阶段</a>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-1">
+                        <label></label>
+                    </div>
+                    <div class="col-md-4">
+                        <table class="table" id="jhTable" border="1">
+                            <tr>
+                                <td>序号</td>
+                                <td>阶段</td>
+                                <td>开始日期</td>
+                                <td>阶段负责人</td>
+                                <td>操作</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+<script>
+
+    //取消
+    function cancel() {
+        location.href="../page/projectshow";
+    }
+
+    //新增
+    function addProject(){
+        $.ajax({
+            url:'../project/addProject',//后台请求地址
+            type:'post',
+            data:$("#projectForm").serialize(),//表单序列化
+            //dataType:'json',
+            success:function(){
+                bootbox.alert({
+                    size: "small",
+                    title: "提示",
+                    message: "成功",
+                    callback: function(){
+                        return;
+                    }
+                });
+                //刷新表格
+                cancel();
+                searchProject();
+            }
+        });
+    }
+
+
+    var res;
+    function createAddContent(url){
+        $.ajax({
+            url:url,
+            async:false,//同步，默认是：异步
+            success:function(data){
+                res = data;
+            }
+        });
+        return res;
+    }
+    var i = 0;
+    function addsatge(){
+        bootbox.dialog({
+            title:"新增阶段",
+            message:createAddContent("../page/toaddstage"),
+            buttons : {
+                "success" : {
+                    "label" : "<i class='icon-ok'></i> 保存",
+                    "className" : "btn-sm btn-success",
+                    "callback" : function() {
+
+                        $("#stageList["+i+"].stage").html(1224343);
+                        $("#stageList["+i+"].stadate").text(555);
+                        $("#stageList["+i+"].seeto").val(111);
+/*                        alert($("#stage").val());
+                        alert($("#stadate").val());
+                        alert($("#seeto").val());*/
+                        var str="";
+                        str+="<tr>"
+                        str+="<td><span id='stageList["+i+"].stage'></span></td>"
+                        str+="<td><span id='stageList["+i+"].stadate'></span></td>"
+                        str+="<td><span id='stageList["+i+"].seeto'></span></td>"
+                        str+="</tr"
+                        $("#jhTable").append(str);
+
+                        i++;
+
+                        //提交表单数据：保存
+              /*          $.ajax({
+                            url:'../page/toproadd',//后台请求地址
+                            type:'post',
+                            data:$("#parkinglot").serialize(),//表单序列化
+                            //dataType:'json',
+                            success:function(data){
+                                bootbox.alert({
+                                    size: "small",
+                                    title: "提示",
+                                    message: data,
+                                    callback: function(){
+                                        return;
+                                    }
+                                });
+                                //刷新表格
+                                searMovic();
+                            }
+                        });*/
+                    }
+                },
+                "cancel" : {
+                    "label" : "<i class='icon-info'></i> 取消",
+                    "className" : "btn-sm btn-danger",
+                    "callback" : function() {
+
+                    }
+                }
+            }
+        });
+    }
+
+    function initProjectTable(){
+        var proid = $("#proid").val();
+        if (proid != ""){
+            $("#jhTable").bootstrapTable({
+                url:"../project/findProjectStage?id="+proid,
+                columns:[
+                    {checkbox:true},
+                    {field:"id",title:"序号"},
+                    {field:"stage",title:"阶段"},
+                    {field:"stadate",title:"开始日期"},
+                    {field:"seeto",title:"阶段负责人"},
+                    {field:"xx",title:"操作",formatter:function(value,rows,index){
+                            var str ="";
+                            str = "<a href='javascript:goumai("+rows.lotid+")'>删除</a>";
+                            str = "<a href='javascript:tui("+rows.lotid+")'>修改</a>";
+                            return str;
+                        }}
+                ]
+            })
+        }
+    }
+
+
+    $('.date').datetimepicker({
+        language: 'zh-CN',//显示中文
+        format: 'yyyy-mm-dd',//显示格式
+        minView: "month",//设置只显示到月份
+        initialDate: new Date(),//初始化当前日期
+        autoclose: true,//选中自动关闭
+        todayBtn: true//显示今日按钮
+    });
+</script>
+</html>
