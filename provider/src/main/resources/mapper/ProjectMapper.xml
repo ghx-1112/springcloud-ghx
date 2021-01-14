@@ -33,9 +33,17 @@
         <include refid="prosql"></include>
         limit #{start},#{rows}
     </select>
+    <!-- 新增项目信息 -->
     <insert id="addProject" parameterType="com.jk.pojo.ProjectBean" useGeneratedKeys="true" keyProperty="proid">
         insert into d_project(pronumber,proname,prodescribe,proprincipal,protechlead,proproduct,protest,promarketing,procurrent,prostatus,prostartdate,proenddate)
             values(#{pronumber},#{proname},#{prodescribe},#{proprincipal},#{protechlead},#{proproduct},#{protest},#{promarketing},"需求对接",1,#{prostartdate},#{proenddate})
+    </insert>
+    <!-- 根据项目id批量新增项目阶段信息 -->
+    <insert id="addProjectStage">
+        insert into d_plan(stage,stadate,completion,seeto,proid) values
+        <foreach collection="stageList" item="stage" separator="," >
+            (#{stage.stage},#{stage.stadate},#{stage.completion},#{stage.seeto},#{proid})
+        </foreach>
     </insert>
     <!-- 根据id查询 -->
     <select id="findProjectById" resultType="com.jk.pojo.ProjectBean">
@@ -57,10 +65,21 @@
     <select id="findStageById" resultType="com.jk.pojo.StageBean">
         select * from d_plan where id = #{id}
     </select>
-    <insert id="addProjectStage">
-        insert into d_plan(stage,stadate,completion,seeto,proid) values
-        <foreach collection="stageList" item="stage" separator="," >
-            (#{stage.stage},#{stage.stadate},#{stage.completion},#{stage.seeto},#{proid})
-        </foreach>
+    <!-- 修改项目信息 -->
+    <update id="upProject">
+        update d_project set pronumber=#{pronumber},proname=#{proname},proprincipal=#{proprincipal},protechlead=#{protechlead},
+        proproduct=#{proproduct},protest=#{protest},promarketing=#{promarketing},prostartdate=#{prostartdate},proenddate=#{proenddate} where proid = #{proid}
+    </update>
+    <!-- 根据id修改阶段信息 -->
+    <update id="upStageById">
+        update d_plan set stage=#{stage},stadate=#{stadate},completion=#{completion},seeto=#{seeto} where id = #{id}
+    </update>
+    <!-- 删除阶段信息 -->
+    <delete id="delStageById">
+        delect from d_plan where id = #{id}
+    </delete>
+    <!-- 根据项目id新增阶段信息 -->
+    <insert id="addStage">
+        insert into d_plan(stage,stadate,completion,seeto,proid) values(#{stage},#{stadate},#{completion},#{seeto},#{proid})
     </insert>
 </mapper>

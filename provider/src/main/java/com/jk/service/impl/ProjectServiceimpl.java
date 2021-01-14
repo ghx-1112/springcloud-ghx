@@ -52,10 +52,14 @@ public class ProjectServiceimpl implements ProjectService {
 
     @Override
     public void addProject(ProjectBean projectBean) {
-        projectDao.addProject(projectBean);//新增项目表
-        //System.out.println(projectBean);
+        if (projectBean.getProid()!=null){//修改
+            projectDao.upProject(projectBean);
+        }else {
+            projectDao.addProject(projectBean);//新增项目表
+            //System.out.println(projectBean);
+            projectDao.addProjectStage(projectBean);
+        }
 
-        projectDao.addProjectStage(projectBean);
     }
 
     @Override
@@ -77,5 +81,20 @@ public class ProjectServiceimpl implements ProjectService {
     @Override
     public StageBean findStageById(Integer id) {
         return projectDao.findStageById(id);
+    }
+
+    @Override
+    public void upStageById(StageBean stageBean) {
+        if (stageBean.getId()==null){//新增
+            projectDao.addStage(stageBean);
+        }else {//修改
+            projectDao.upStageById(stageBean);
+        }
+
+    }
+
+    @Override
+    public void delStageById(Integer id) {
+        projectDao.delStageById(id);
     }
 }

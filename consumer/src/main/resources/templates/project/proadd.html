@@ -148,7 +148,7 @@
                     </div>
                     <div class="col-md-8">
                         <span id="spanadd"></span>
-                        <table class="table" id="jhTable"></table>
+                        <span id="totoolbar"></span>
                     </div>
                 </div>
             </div>
@@ -158,54 +158,8 @@
                         <label></label>
                     </div>
                     <div class="col-md-10">
-                        <!--<form id="stageForm">
-                            <div class="form-group">
-                                <div class="row">
-                                    <div class="col-md-2">
-                                        <label>*阶段选择:</label>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <select type="text" class="form-control" id="stageList[0].stage" name="stage">
-                                            <option value="需求对接">需求对接</option>
-                                            <option value="需求分析">需求分析</option>
-                                            <option value="产品分析">产品分析</option>
-                                            <option value="项目完成">项目完成</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="row">
-                                    <div class="col-md-2">
-                                        <label>开始日期:</label>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <input type="text" class="form-control date" id="stageList[0].stadate" name="stadate">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="row">
-                                    <div class="col-md-2">
-                                        <label>完成日期:</label>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <input type="text" class="form-control date" id="stageList[0].completion" name="stadate">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="row">
-                                    <div class="col-md-2">
-                                        <label>阶段负责人:</label>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <input type="text" name="seeto" id="stageList[0].seeto" class="form-control">
-                                    </div>
-                                </div>
-                            </div>
-                        </form>-->
                         <span id="span"></span>
+                        <table class="table" id="jhTable"></table>
                     </div>
                 </div>
             </div>
@@ -217,7 +171,7 @@
 <script>
 
     $(function (){
-        alert($("#sta").val())
+        //alert($("#sta").val())
         fdate();
         status();
 
@@ -276,8 +230,6 @@
             str+='</div>'
             str+='</div>'
             str+='</div>';
-            //$("#stageForm").append(str);
-            //$("#stageForm").html(str);
             $("#span").html(str);
             var add="";
             add ='<a onclick="addsatge()" >新增阶段</a>';
@@ -287,8 +239,10 @@
             var proid = $("#sta").val();
             $.ajax({//回显项目信息
                 url: "../project/findProjectById",
+                toolbar: "#toolbar",
                 data:{proid:proid},
                 success:function (data){
+                    $("#proid").val(data.proid)
                     $("#pronumber").val(data.pronumber)
                     $("#proname").val(data.proname)
                     $("#prodescribe").val(data.prodescribe)
@@ -312,15 +266,94 @@
                     {field:"seeto",title:"阶段负责人"},
                     {field:"xx",title:"操作",formatter:function(value,rows,index){
                             var str ="";
-                            str += "  <a href='javascript:goumai("+rows.id+")'>删除</a>";
+                            str += "  <a href='javascript:delStageById("+rows.id+")'>删除</a>";
                             str += "  <a href='javascript:toUpStageById("+rows.id+")'>修改</a>";
                             return str;
                         }}
                 ]
-            })
+            });
+
+            var too="";
+            too+='<div id="toolbar">'
+            too+='<form class="form-inline">'
+            too+='<a onclick="toaddsatge()" >新增阶段</a>'
+            too+='</form>'
+            too+='</div>'
+            $("#totoolbar").html(too)
         }
     }
 
+    //打开新增阶段弹框
+    function toaddsatge(){
+        bootbox.dialog({
+            title: "新增",
+            message: createAddContent("../page/toaddstage"),
+            buttons: {
+                "success": {
+                    "label": "<i class='icon-ok'></i> 保存",
+                    "className": "btn-sm btn-success",
+                    "callback": function () {
+                        //提交表单数据：保存
+                        $.ajax({
+                            url: '../project/upStageById',//后台请求地址
+                            type: 'post',
+                            data: $("#stageForm").serialize(),//表单序列化
+                            //dataType:'json',
+                            success: function () {
+                                //刷新表格
+                                $("#jhTable").bootstrapTable("refresh")//刷新表格
+                            }
+                        });
+                    }
+                },
+                "cancel": {
+                    "label": "<i class='icon-info'></i> 取消",
+                    "className": "btn-sm btn-danger",
+                    "callback": function () {
+
+                    }
+                }
+            }
+        });
+        var proid = $("#proid").val();
+        $("#proids").val(proid)
+    }
+
+    //删除阶段计划信息
+    function delStageById(id) {
+        bootbox.confirm({
+            size: "small",
+            title:"提示",
+            message: "是否确认删除?",
+            buttons: {
+                confirm: {
+                    label: '确定',
+                    className: 'btn-success'
+                },
+                cancel: {
+                    label: '取消',
+                    className: 'btn-danger'
+                }
+            },
+            callback: function(result){
+                if(result){
+                    $.ajax({
+                        url:"../project/delStageById",
+                        data:{id:id},
+                        success:function(){
+                            bootbox.alert({
+                                size: "small",
+                                title: "提示",
+                                message: "删除成功！！！",
+                                callback: function(){}
+                            });
+                            $("#jhTable").bootstrapTable("refresh")//刷新表格
+                        }
+                    });
+                }
+            }
+        })
+    }
 
     var res;
     function createAddContent(url){
@@ -344,11 +377,10 @@
                     "className": "btn-sm btn-success",
                     "callback": function () {
                         //提交表单数据：保存
-                        //TODO
                         $.ajax({
                             url: '../project/upStageById',//后台请求地址
                             type: 'post',
-                            data: $("#goupark").serialize(),//表单序列化
+                            data: $("#stageForm").serialize(),//表单序列化
                             //dataType:'json',
                             success: function () {
                                 //刷新表格
@@ -405,7 +437,7 @@
 
     var i = 1;
     function addsatge(){
-        alert(i)
+        //alert(i)
         var str = ""
         str+='<hr>'
         str+='<div class="form-group">'

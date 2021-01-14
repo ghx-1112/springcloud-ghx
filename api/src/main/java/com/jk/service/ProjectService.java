@@ -33,4 +33,10 @@ public interface ProjectService {
 
     @RequestMapping("project/findStageById")
     StageBean findStageById(@RequestParam Integer id);
+
+    @RequestMapping("project/upStageById")
+    void upStageById(StageBean stageBean);
+
+    @RequestMapping("project/delStageById")
+    void delStageById(@RequestParam Integer id);
 }

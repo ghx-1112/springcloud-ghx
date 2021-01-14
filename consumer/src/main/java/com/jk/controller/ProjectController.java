@@ -103,4 +103,27 @@ public class ProjectController {
     public StageBean findStageById(Integer id){
         return projectService.findStageById(id);
     }
+
+    /**
+     * @Author: ghx
+     * @Description: 保存阶段信息
+     * @Date: 2021/1/14 19:28
+      * @param stageBean
+     * @Return: void
+     **/
+    @RequestMapping("upStageById")
+    public void upStageById(StageBean stageBean){
+        projectService.upStageById(stageBean);
+    }
+    /**
+     * @Author: ghx
+     * @Description: 根据id删除阶段计划表
+     * @Date: 2021/1/14 19:40
+      * @param id
+     * @Return: void
+     **/
+    @RequestMapping("delStageById")
+    public void delStageById(Integer id){
+        projectService.delStageById(id);
+    }
 }

@@ -22,4 +22,8 @@ public interface ProjectService {
     void delProByProId(Integer proid);
 
     StageBean findStageById(Integer id);
+
+    void upStageById(StageBean stageBean);
+
+    void delStageById(Integer id);
 }

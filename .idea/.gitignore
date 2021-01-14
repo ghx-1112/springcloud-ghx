@@ -1,9 +1,17 @@
 # Default ignored files
 /shelf/
-workspace.xml
+
 # Datasource local storage ignored files
 /../../../../../../:\IDEA\wordspace\20066\springcloud-ghx\.idea/dataSources/
 /dataSources.local.xml
 # Editor-based HTTP Client requests
 /httpRequests/
 .iml
+
+ant.xml
+compiler.xml
+encodings.xml
+jarRepositories.xml
+misc.xml
+vcs.xml
+workspace.xml

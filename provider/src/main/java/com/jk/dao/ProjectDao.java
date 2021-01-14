@@ -31,4 +31,12 @@ public interface ProjectDao {
     StageBean findStageById(Integer id);
 
     void addProjectStage(ProjectBean projectBean);
+
+    void upStageById(StageBean stageBean);
+
+    void delStageById(Integer id);
+
+    void upProject(ProjectBean projectBean);
+
+    void addStage(StageBean stageBean);
 }
