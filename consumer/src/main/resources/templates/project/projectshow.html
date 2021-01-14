@@ -224,49 +224,14 @@
         });
         return res;
     }
+    //跳转至详情页
+    function findProjectInfo(proid){
+        location.href="../page/toproInfo?proid="+proid;
+    }
+
+    //跳转新增页
     function openProject(){
         location.href="../page/toproadd";
-        return ;
-        bootbox.dialog({
-            title:"新增项目",
-            message:createAddContent("../page/toproadd"),
-            buttons : {
-                "success" : {
-                    "label" : "<i class='icon-ok'></i> 保存",
-                    "className" : "btn-sm btn-success",
-                    "callback" : function() {
-                        //提交表单数据：保存
-                        $.ajax({
-                            url:'../page/toproadd',//后台请求地址
-                            type:'post',
-                            data:$("#parkinglot").serialize(),//表单序列化
-                            //dataType:'json',
-                            success:function(data){
-                                bootbox.alert({
-                                    size: "small",
-                                    title: "提示",
-                                    message: data,
-                                    callback: function(){
-                                        return;
-                                    }
-                                });
-                                //刷新表格
-                                searMovic();
-                            }
-                        });
-                    }
-                },
-                "cancel" : {
-                    "label" : "<i class='icon-info'></i> 取消",
-                    "className" : "btn-sm btn-danger",
-                    "callback" : function() {
-
-                    }
-                }
-            }
-        });
-        //加载停车场
-        //initpark();
     }
 
     function searchProject(){
@@ -310,9 +275,9 @@
                 {field:"prostartdate",title:"开始日期"},
                 {field:"xx",title:"操作",formatter:function(value,rows,index){
                         var str ="";
-                            str += "  <a href='javascript:goumai("+rows.lotid+")'>跟进</a>";
-                            str += "  <a href='javascript:tui("+rows.lotid+")'>删除</a>";
-                            str += "  <a href='javascript:findProjectInfo("+rows.lotid+")'>详情</a>";
+                            str += "  <a href='javascript:goumai("+rows.proid+")'>跟进</a>";
+                            str += "  <a href='javascript:tui("+rows.proid+")'>删除</a>";
+                            str += "  <a href='javascript:findProjectInfo("+rows.proid+")'>详情</a>";
                         return str;
                     }}
             ]

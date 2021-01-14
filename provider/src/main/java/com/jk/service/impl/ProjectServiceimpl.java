@@ -2,6 +2,7 @@ package com.jk.service.impl;
 
 import com.jk.dao.ProjectDao;
 import com.jk.pojo.ProjectBean;
+import com.jk.pojo.StageBean;
 import com.jk.pojo.TreeBean;
 import com.jk.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +53,17 @@ public class ProjectServiceimpl implements ProjectService {
     @Override
     public void addProject(ProjectBean projectBean) {
         projectDao.addProject(projectBean);//新增项目表
-        System.out.println(projectBean);
+        //System.out.println(projectBean);
         //projectDao.addProjectStage(projectBean.getStageList());
+    }
+
+    @Override
+    public ProjectBean findProjectById(Integer proid) {
+        return projectDao.findProjectById(proid);
+    }
+
+    @Override
+    public List<StageBean> findStageByProId(Integer proid) {
+        return projectDao.findStageByProId(proid);
     }
 }

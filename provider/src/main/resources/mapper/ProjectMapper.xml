@@ -37,4 +37,12 @@
         insert into d_project(pronumber,proname,prodescribe,proprincipal,protechlead,proproduct,protest,promarketing,procurrent,prostatus,prostartdate,proenddate)
             values(#{pronumber},#{proname},#{prodescribe},#{proprincipal},#{protechlead},#{proproduct},#{protest},#{promarketing},#{procurrent},1,#{prostartdate},#{proenddate})
     </insert>
+    <!-- 根据id查询 -->
+    <select id="findProjectById" resultType="com.jk.pojo.ProjectBean">
+        select * from d_project pro where pro.proid = #{proid}
+    </select>
+    <!-- 根据proid查询项目阶段 -->
+    <select id="findStageByProId" resultType="com.jk.pojo.StageBean">
+        select * from d_plan where proid = #{proid}
+    </select>
 </mapper>

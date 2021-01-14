@@ -1,6 +1,7 @@
 package com.jk.service;
 
 import com.jk.pojo.ProjectBean;
+import com.jk.pojo.StageBean;
 import com.jk.pojo.TreeBean;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,4 +21,10 @@ public interface ProjectService {
 
     @RequestMapping("project/addProject")
     void addProject(ProjectBean projectBean);
+
+    @RequestMapping("project/findProjectById")
+    ProjectBean findProjectById(@RequestParam Integer proid);
+
+    @RequestMapping("project/findStageByProId")
+    List<StageBean> findStageByProId(@RequestParam Integer proid);
 }

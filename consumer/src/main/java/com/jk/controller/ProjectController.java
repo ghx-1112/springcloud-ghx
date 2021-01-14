@@ -1,13 +1,11 @@
 package com.jk.controller;
 
 import com.jk.pojo.ProjectBean;
+import com.jk.pojo.StageBean;
 import com.jk.pojo.TreeBean;
 import com.jk.service.ProjectService;
-import org.omg.PortableInterceptor.INACTIVE;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
@@ -58,5 +56,27 @@ public class ProjectController {
         projectService.addProject(projectBean);
     }
 
+    /**
+     * @Author: ghx
+     * @Description: 根据id查询项目详情
+     * @Date: 2021/1/14 11:26
+      * @param proid
+     * @Return: java.util.List<com.jk.pojo.ProjectBean>
+     **/
+    @RequestMapping("findProjectById")
+    public ProjectBean findProjectById(Integer proid){
+        return projectService.findProjectById(proid);
+    }
 
+    /**
+     * @Author: ghx
+     * @Description: 根据项目id查询阶段计划表
+     * @Date: 2021/1/14 14:01
+      * @param
+     * @Return: java.util.List<com.jk.pojo.StageBean>
+     **/
+    @RequestMapping("findStageByProId")
+    public List<StageBean> findStageByProId(Integer proid){
+        return projectService.findStageByProId(proid);
+    }
 }

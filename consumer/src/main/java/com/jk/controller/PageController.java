@@ -1,6 +1,7 @@
 package com.jk.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -39,5 +40,18 @@ public class PageController {
     @RequestMapping("toaddstage")
     public String addstage(){
         return "project/addstage";
+    }
+
+    /**
+     * @Author: ghx
+     * @Description: 项目详情页
+     * @Date: 2021/1/13 19:58
+      * @param
+     * @Return: java.lang.String
+     **/
+    @RequestMapping("toproInfo")
+    public String proInfo(Integer proid, Model model){
+        model.addAttribute("proid",proid);
+        return "project/proInfo";
     }
 }

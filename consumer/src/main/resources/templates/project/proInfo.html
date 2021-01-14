@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- 引入bootstap的css文件 -->
+    <link rel="stylesheet" href="../js/bootstrap/bootstrap3/css/bootstrap.css">
+    <link rel="stylesheet" href="../js/bootstrap/bootstrap3/css/bootstrap-theme.css">
+
+    <!-- 引入jquery文件 -->
+    <script type="text/javascript" src="../js/jquery.min.js"></script>
+    <!-- 引入bootstrap的js文件 -->
+    <script type="text/javascript" src="../js/bootstrap/bootstrap3/js/bootstrap.min.js"></script>
+    <!-- 引入弹框的js文件 -->
+    <script type="text/javascript" src="../js/bootstrap/bootstrap-bootbox/bootbox.js"></script>
+    <!-- 引入表格的css和js文件 -->
+    <link rel="stylesheet" href="../js/bootstrap/bootstrap-table/bootstrap-table.css">
+    <script src="../js/bootstrap/bootstrap-table/bootstrap-table.js"></script>
+    <script src="../js/bootstrap/bootstrap-table/locale/bootstrap-table-zh-CN.js"></script>
+
+    <script src="../js/bootstrap/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+    <script src="../js/bootstrap/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+    <link rel="stylesheet" href="../js/bootstrap/bootstrap-datetimepicker/css/bootstrap-datetimepicker.css">
+
+    <style>
+        .btn{
+            margin-right: 30px;
+        }
+    </style>
+
+</head>
+<body>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <p class="navbar-text navbar-right">
+            <button type="button" onclick="cancel()" class="btn btn-success glyphicon glyphicon-search">取消</button>
+            <button type="button" onclick="addProject()" class="btn btn-warning glyphicon glyphicon-plus">保存</button>
+    </div>
+</nav>
+<div style="border-color: #ddd;border-width: 1px;">
+    <div class="container-fluid">
+        <form id="projectForm">
+            <input type="hidden" th:value="${proid}" name="proid" id="proid">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-1">
+                        <label for="pronumber">项目编号:</label>
+                    </div>
+                    <div class="col-md-4">
+                        <span id="pronumber"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-1">
+                        <label for="proname">项目名称:</label>
+                    </div>
+                    <div class="col-md-4">
+                        <span id="proname"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-1">
+                        <label>项目描述:</label>
+                    </div>
+                    <div class="col-md-4">
+                        <span id="prodescribe"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-1">
+                        <label>项目负责人:</label>
+                    </div>
+                    <div class="col-md-4">
+                        <span id="proprincipal"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-1">
+                        <label>技术负责人:</label>
+                    </div>
+                    <div class="col-md-2">
+                        <span id="protechlead"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-1">
+                        <label>产品负责人:</label>
+                    </div>
+                    <div class="col-md-2">
+                        <span id="proproduct"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-1">
+                        <label>测试负责人:</label>
+                    </div>
+                    <div class="col-md-2">
+                        <span id="protest"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-1">
+                        <label>市场负责人:</label>
+                    </div>
+                    <div class="col-md-2">
+                        <span id="promarketing"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-1">
+                        <label>项目开始日期:</label>
+                    </div>
+                    <div class="col-md-4">
+                        <span id="prostartdate"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-1">
+                        <label>项目截止日期:</label>
+                    </div>
+                    <div class="col-md-4">
+                        <span id="proenddate"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-1">
+                        <label>阶段计划表:</label>
+                    </div>
+                    <div class="col-md-6">
+                        <table class="table" id="jhTable" ></table>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+<script>
+
+    $(function (){
+        initProjectByid(); //初始化加载项目详情
+        initStageByProId(); //根据项目id查询阶段计划表
+    })
+
+    //取消
+    function cancel() {
+        location.href="../page/projectshow";
+    }
+
+    //根据项目id查询阶段计划表
+    function initStageByProId(){
+        var proid = $("#proid").val();
+        $("#jhTable").bootstrapTable({
+            url:"../project/findStageByProId?proid="+$("#proid").val(),
+            columns:[
+                {checkbox:true},
+                {field:"id",title:"序号"},
+                {field:"stage",title:"阶段"},
+                {field:"stadate",title:"开始日期"},
+                {field:"seeto",title:"阶段负责人"},
+                {field:"xx",title:"操作",formatter:function(value,rows,index){
+                        var str ="";
+                        str = "<a href='javascript:goumai("+rows.lotid+")'>删除</a>";
+                        str = "<a href='javascript:tui("+rows.lotid+")'>修改</a>";
+                        return str;
+                    }}
+            ]
+        })
+    }
+
+    //初始化加载项目详情
+    function initProjectByid(){
+        $.ajax({
+            url: "../project/findProjectById",
+            data:{proid:$("#proid").val()},
+            success:function (data){
+                $("#pronumber").text(data.pronumber)
+                $("#proname").text(data.proname)
+                $("#prodescribe").text(data.prodescribe)
+                $("#proprincipal").text(data.proprincipal)
+                $("#protechlead").text(data.protechlead)
+                $("#proproduct").text(data.proproduct)
+                $("#protest").text(data.protest)
+                $("#promarketing").text(data.promarketing)
+                $("#prostartdate").text(data.prostartdate)
+                $("#proenddate").text(data.proenddate)
+            }
+        })
+    }
+
+
+    $('.date').datetimepicker({
+        language: 'zh-CN',//显示中文
+        format: 'yyyy-mm-dd',//显示格式
+        minView: "month",//设置只显示到月份
+        initialDate: new Date(),//初始化当前日期
+        autoclose: true,//选中自动关闭
+        todayBtn: true//显示今日按钮
+    });
+</script>
+</html>

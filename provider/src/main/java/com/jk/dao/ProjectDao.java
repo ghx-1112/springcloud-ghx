@@ -1,6 +1,7 @@
 package com.jk.dao;
 
 import com.jk.pojo.ProjectBean;
+import com.jk.pojo.StageBean;
 import com.jk.pojo.TreeBean;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -18,4 +19,8 @@ public interface ProjectDao {
     List<ProjectBean> findProjectPage(@Param("start")int start,@Param("rows") Integer rows,@Param("projectBean") ProjectBean projectBean);
 
     void addProject(ProjectBean projectBean);
+
+    ProjectBean findProjectById(Integer proid);
+
+    List<StageBean> findStageByProId(Integer proid);
 }
