@@ -54,7 +54,8 @@ public class ProjectServiceimpl implements ProjectService {
     public void addProject(ProjectBean projectBean) {
         projectDao.addProject(projectBean);//新增项目表
         //System.out.println(projectBean);
-        //projectDao.addProjectStage(projectBean.getStageList());
+
+        projectDao.addProjectStage(projectBean);
     }
 
     @Override
@@ -65,5 +66,16 @@ public class ProjectServiceimpl implements ProjectService {
     @Override
     public List<StageBean> findStageByProId(Integer proid) {
         return projectDao.findStageByProId(proid);
+    }
+
+    @Override
+    public void delProByProId(Integer proid) {
+        projectDao.delProByProId(proid);//删除项目信息
+        projectDao.delStageByProId(proid);//删除项目阶段信息
+    }
+
+    @Override
+    public StageBean findStageById(Integer id) {
+        return projectDao.findStageById(id);
     }
 }

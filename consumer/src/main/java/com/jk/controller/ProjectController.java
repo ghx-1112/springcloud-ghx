@@ -79,4 +79,28 @@ public class ProjectController {
     public List<StageBean> findStageByProId(Integer proid){
         return projectService.findStageByProId(proid);
     }
+
+    /**
+     * @Author: ghx
+     * @Description: 删除项目信息及关联的阶段表
+     * @Date: 2021/1/14 14:32
+      * @param proid
+     * @Return: void
+     **/
+    @RequestMapping("delProByProId")
+    public void delProByProId(Integer proid){
+        projectService.delProByProId(proid);
+    }
+
+    /**
+     * @Author: ghx
+     * @Description: 修改阶段信息 回显
+     * @Date: 2021/1/14 17:25
+      * @param
+     * @Return: com.jk.pojo.StageBean
+     **/
+    @RequestMapping("findStageById")
+    public StageBean findStageById(Integer id){
+        return projectService.findStageById(id);
+    }
 }

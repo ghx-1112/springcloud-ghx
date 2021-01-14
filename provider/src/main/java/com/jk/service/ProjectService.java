@@ -18,4 +18,8 @@ public interface ProjectService {
     ProjectBean findProjectById(Integer proid);
 
     List<StageBean> findStageByProId(Integer proid);
+
+    void delProByProId(Integer proid);
+
+    StageBean findStageById(Integer id);
 }

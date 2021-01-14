@@ -35,7 +35,7 @@
     </select>
     <insert id="addProject" parameterType="com.jk.pojo.ProjectBean" useGeneratedKeys="true" keyProperty="proid">
         insert into d_project(pronumber,proname,prodescribe,proprincipal,protechlead,proproduct,protest,promarketing,procurrent,prostatus,prostartdate,proenddate)
-            values(#{pronumber},#{proname},#{prodescribe},#{proprincipal},#{protechlead},#{proproduct},#{protest},#{promarketing},#{procurrent},1,#{prostartdate},#{proenddate})
+            values(#{pronumber},#{proname},#{prodescribe},#{proprincipal},#{protechlead},#{proproduct},#{protest},#{promarketing},"需求对接",1,#{prostartdate},#{proenddate})
     </insert>
     <!-- 根据id查询 -->
     <select id="findProjectById" resultType="com.jk.pojo.ProjectBean">
@@ -45,4 +45,22 @@
     <select id="findStageByProId" resultType="com.jk.pojo.StageBean">
         select * from d_plan where proid = #{proid}
     </select>
+    <!-- 删除项目信息 -->
+    <delete id="delProByProId">
+        delete from d_project where proid = #{proid}
+    </delete>
+    <!-- 根据项目ID删除项目阶段信息 -->
+    <delete id="delStageByProId" >
+        delete from d_plan where proid = #{proid}
+    </delete>
+    <!-- 修改阶段信息 回显 -->
+    <select id="findStageById" resultType="com.jk.pojo.StageBean">
+        select * from d_plan where id = #{id}
+    </select>
+    <insert id="addProjectStage">
+        insert into d_plan(stage,stadate,completion,seeto,proid) values
+        <foreach collection="stageList" item="stage" separator="," >
+            (#{stage.stage},#{stage.stadate},#{stage.completion},#{stage.seeto},#{proid})
+        </foreach>
+    </insert>
 </mapper>

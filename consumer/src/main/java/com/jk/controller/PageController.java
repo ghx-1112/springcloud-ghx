@@ -27,7 +27,8 @@ public class PageController {
      * @Return: java.lang.String
      **/
     @RequestMapping("toproadd")
-    public String toproadd(){
+    public String toproadd(Integer proid,Model model){
+        model.addAttribute("proid",proid);
         return "project/proadd";
     }
     /**

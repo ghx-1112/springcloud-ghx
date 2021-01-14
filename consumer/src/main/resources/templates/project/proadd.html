@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -146,8 +146,9 @@
                     <div class="col-md-1">
                         <label>阶段计划表:</label>
                     </div>
-                    <div class="col-md-4">
-                        <a onclick="addsatge()" >新增阶段</a>
+                    <div class="col-md-8">
+                        <span id="spanadd"></span>
+                        <table class="table" id="jhTable"></table>
                     </div>
                 </div>
             </div>
@@ -156,28 +157,228 @@
                     <div class="col-md-1">
                         <label></label>
                     </div>
-                    <div class="col-md-4">
-                        <table class="table" id="jhTable" border="1">
-                            <tr>
-                                <td>序号</td>
-                                <td>阶段</td>
-                                <td>开始日期</td>
-                                <td>阶段负责人</td>
-                                <td>操作</td>
-                            </tr>
-                        </table>
+                    <div class="col-md-10">
+                        <!--<form id="stageForm">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <label>*阶段选择:</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <select type="text" class="form-control" id="stageList[0].stage" name="stage">
+                                            <option value="需求对接">需求对接</option>
+                                            <option value="需求分析">需求分析</option>
+                                            <option value="产品分析">产品分析</option>
+                                            <option value="项目完成">项目完成</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <label>开始日期:</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <input type="text" class="form-control date" id="stageList[0].stadate" name="stadate">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <label>完成日期:</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <input type="text" class="form-control date" id="stageList[0].completion" name="stadate">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <label>阶段负责人:</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <input type="text" name="seeto" id="stageList[0].seeto" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                        </form>-->
+                        <span id="span"></span>
                     </div>
                 </div>
             </div>
         </form>
     </div>
 </div>
+<input type="hidden" th:value="${proid}" id="sta">
 </body>
 <script>
+
+    $(function (){
+        alert($("#sta").val())
+        fdate();
+        status();
+
+    })
 
     //取消
     function cancel() {
         location.href="../page/projectshow";
+    }
+
+    function status(){
+        if ( $("#sta").val() ==-1){ //新增
+            var str = ""
+            str+='<div class="form-group">'
+            str+='<div class="row">'
+            str+='<div class="col-md-2">'
+            str+='<label>*阶段选择:</label>'
+            str+='</div>'
+            str+='<div class="col-md-4">'
+            str+='<select type="text" class="form-control" id="stageList[0].stage" name="stageList[0].stage">'
+            str+='<option value="需求对接">需求对接</option>'
+            str+='<option value="需求分析">需求分析</option>'
+            str+='<option value="产品分析">产品分析</option>'
+            str+='<option value="项目完成">项目完成</option>'
+            str+='</select>'
+            str+='</div>'
+            str+='</div>'
+            str+='</div>'
+            str+='<div class="form-group">'
+            str+='<div class="row">'
+            str+='<div class="col-md-2">'
+            str+='<label>开始日期:</label>'
+            str+='</div>'
+            str+='<div class="col-md-4">'
+            str+='<input type="text" class="form-control date" id="stageList[0].stadate" name="stageList[0].stadate">'
+            str+='</div>'
+            str+='</div>'
+            str+='</div>'
+            str+='<div class="form-group">'
+            str+='<div class="row">'
+            str+='<div class="col-md-2">'
+            str+='<label>完成日期:</label>'
+            str+='</div>'
+            str+='<div class="col-md-4">'
+            str+='<input type="text" class="form-control date" id="stageList[0].completion" name="stageList[0].completion">'
+            str+='</div>'
+            str+='</div>'
+            str+='</div>'
+            str+='<div class="form-group" id="adddiv">'
+            str+='<div class="row">'
+            str+='<div class="col-md-2">'
+            str+='<label>阶段负责人:</label>'
+            str+='</div>'
+            str+='<div class="col-md-4">'
+            str+='<input type="text" name="stageList[0].seeto" id="stageList[0].seeto" class="form-control">'
+            str+='</div>'
+            str+='</div>'
+            str+='</div>';
+            //$("#stageForm").append(str);
+            //$("#stageForm").html(str);
+            $("#span").html(str);
+            var add="";
+            add ='<a onclick="addsatge()" >新增阶段</a>';
+            $("#spanadd").html(add);
+            fdate()
+        }else { //跟进:修改
+            var proid = $("#sta").val();
+            $.ajax({//回显项目信息
+                url: "../project/findProjectById",
+                data:{proid:proid},
+                success:function (data){
+                    $("#pronumber").val(data.pronumber)
+                    $("#proname").val(data.proname)
+                    $("#prodescribe").val(data.prodescribe)
+                    $("#proprincipal").val(data.proprincipal)
+                    $("#protechlead").val(data.protechlead)
+                    $("#proproduct").val(data.proproduct)
+                    $("#protest").val(data.protest)
+                    $("#promarketing").val(data.promarketing)
+                    $("#prostartdate").val(data.prostartdate)
+                    $("#proenddate").val(data.proenddate)
+                }
+            })
+            //根据项目id查询阶段计划表
+            $("#jhTable").bootstrapTable({
+                url:"../project/findStageByProId?proid="+proid,
+                columns:[
+                    {checkbox:true},
+                    {field:"id",title:"序号"},
+                    {field:"stage",title:"阶段"},
+                    {field:"stadate",title:"开始日期"},
+                    {field:"seeto",title:"阶段负责人"},
+                    {field:"xx",title:"操作",formatter:function(value,rows,index){
+                            var str ="";
+                            str += "  <a href='javascript:goumai("+rows.id+")'>删除</a>";
+                            str += "  <a href='javascript:toUpStageById("+rows.id+")'>修改</a>";
+                            return str;
+                        }}
+                ]
+            })
+        }
+    }
+
+
+    var res;
+    function createAddContent(url){
+        $.ajax({
+            url:url,
+            async:false,//同步，默认是：异步
+            success:function(data){
+                res = data;
+            }
+        });
+        return res;
+    }
+    //打开阶段修改弹框
+    function toUpStageById(id) {
+        bootbox.dialog({
+            title: "修改",
+            message: createAddContent("../page/toaddstage"),
+            buttons: {
+                "success": {
+                    "label": "<i class='icon-ok'></i> 保存",
+                    "className": "btn-sm btn-success",
+                    "callback": function () {
+                        //提交表单数据：保存
+                        //TODO
+                        $.ajax({
+                            url: '../project/upStageById',//后台请求地址
+                            type: 'post',
+                            data: $("#goupark").serialize(),//表单序列化
+                            //dataType:'json',
+                            success: function () {
+                                //刷新表格
+                                $("#jhTable").bootstrapTable("refresh")//刷新表格
+                            }
+                        });
+                    }
+                },
+                "cancel": {
+                    "label": "<i class='icon-info'></i> 取消",
+                    "className": "btn-sm btn-danger",
+                    "callback": function () {
+
+                    }
+                }
+            }
+        });
+        $.ajax({
+            url:'../project/findStageById',//后台请求地址
+            data:{id:id},
+            //dataType:'json',
+            success:function(data){
+                $("#id").val(data.id)
+                $("#stage").val(data.stage)
+                $("#stadate").val(data.stadate)
+                $("#completion").val(data.completion)
+                $("#seeto").val(data.seeto)
+            }
+        });
+
     }
 
     //新增
@@ -198,112 +399,75 @@
                 });
                 //刷新表格
                 cancel();
-                searchProject();
             }
         });
     }
 
-
-    var res;
-    function createAddContent(url){
-        $.ajax({
-            url:url,
-            async:false,//同步，默认是：异步
-            success:function(data){
-                res = data;
-            }
-        });
-        return res;
-    }
-    var i = 0;
+    var i = 1;
     function addsatge(){
-        bootbox.dialog({
-            title:"新增阶段",
-            message:createAddContent("../page/toaddstage"),
-            buttons : {
-                "success" : {
-                    "label" : "<i class='icon-ok'></i> 保存",
-                    "className" : "btn-sm btn-success",
-                    "callback" : function() {
+        alert(i)
+        var str = ""
+        str+='<hr>'
+        str+='<div class="form-group">'
+            str+='<div class="row">'
+                str+='<div class="col-md-2">'
+                    str+='<label>*阶段选择:</label>'
+                str+='</div>'
+                str+='<div class="col-md-4">'
+                    str+='<select type="text" class="form-control" id="stageList['+i+'].stage" name="stageList['+i+'].stage">'
+                        str+='<option value="需求对接">需求对接</option>'
+                        str+='<option value="需求分析">需求分析</option>'
+                        str+='<option value="产品分析">产品分析</option>'
+                        str+='<option value="项目完成">项目完成</option>'
+                    str+='</select>'
+                str+='</div>'
+            str+='</div>'
+        str+='</div>'
+        str+='<div class="form-group">'
+            str+='<div class="row">'
+                str+='<div class="col-md-2">'
+                    str+='<label>开始日期:</label>'
+                str+='</div>'
+                str+='<div class="col-md-4">'
+                    str+='<input type="text" class="form-control date" id="stageList['+i+'].stadate" name="stageList['+i+'].stadate">'
+                str+='</div>'
+            str+='</div>'
+        str+='</div>'
+        str+='<div class="form-group">'
+            str+='<div class="row">'
+                str+='<div class="col-md-2">'
+                    str+='<label>完成日期:</label>'
+                str+='</div>'
+                str+='<div class="col-md-4">'
+                    str+='<input type="text" class="form-control date" id="stageList['+i+'].completion" name="stageList['+i+'].completion">'
+                str+='</div>'
+            str+='</div>'
+        str+='</div>'
+        str+='<div class="form-group">'
+            str+='<div class="row">'
+                str+='<div class="col-md-2">'
+                    str+='<label>阶段负责人:</label>'
+                str+='</div>'
+                str+='<div class="col-md-4">'
+                    str+='<input type="text" name="stageList['+i+'].seeto" id="stageList['+i+'].seeto" class="form-control">'
+                str+='</div>'
+            str+='</div>'
+        str+='</div>';
+        $("#adddiv").append(str);
+        i++
+        fdate()
+    }
 
-                        $("#stageList["+i+"].stage").html(1224343);
-                        $("#stageList["+i+"].stadate").text(555);
-                        $("#stageList["+i+"].seeto").val(111);
-/*                        alert($("#stage").val());
-                        alert($("#stadate").val());
-                        alert($("#seeto").val());*/
-                        var str="";
-                        str+="<tr>"
-                        str+="<td><span id='stageList["+i+"].stage'></span></td>"
-                        str+="<td><span id='stageList["+i+"].stadate'></span></td>"
-                        str+="<td><span id='stageList["+i+"].seeto'></span></td>"
-                        str+="</tr"
-                        $("#jhTable").append(str);
-
-                        i++;
-
-                        //提交表单数据：保存
-              /*          $.ajax({
-                            url:'../page/toproadd',//后台请求地址
-                            type:'post',
-                            data:$("#parkinglot").serialize(),//表单序列化
-                            //dataType:'json',
-                            success:function(data){
-                                bootbox.alert({
-                                    size: "small",
-                                    title: "提示",
-                                    message: data,
-                                    callback: function(){
-                                        return;
-                                    }
-                                });
-                                //刷新表格
-                                searMovic();
-                            }
-                        });*/
-                    }
-                },
-                "cancel" : {
-                    "label" : "<i class='icon-info'></i> 取消",
-                    "className" : "btn-sm btn-danger",
-                    "callback" : function() {
-
-                    }
-                }
-            }
+    function fdate(){
+        $('.date').datetimepicker({
+            language: 'zh-CN',//显示中文
+            format: 'yyyy-mm-dd',//显示格式
+            minView: "month",//设置只显示到月份
+            initialDate: new Date(),//初始化当前日期
+            autoclose: true,//选中自动关闭
+            todayBtn: true//显示今日按钮
         });
     }
 
-    function initProjectTable(){
-        var proid = $("#proid").val();
-        if (proid != ""){
-            $("#jhTable").bootstrapTable({
-                url:"../project/findProjectStage?id="+proid,
-                columns:[
-                    {checkbox:true},
-                    {field:"id",title:"序号"},
-                    {field:"stage",title:"阶段"},
-                    {field:"stadate",title:"开始日期"},
-                    {field:"seeto",title:"阶段负责人"},
-                    {field:"xx",title:"操作",formatter:function(value,rows,index){
-                            var str ="";
-                            str = "<a href='javascript:goumai("+rows.lotid+")'>删除</a>";
-                            str = "<a href='javascript:tui("+rows.lotid+")'>修改</a>";
-                            return str;
-                        }}
-                ]
-            })
-        }
-    }
-
-
-    $('.date').datetimepicker({
-        language: 'zh-CN',//显示中文
-        format: 'yyyy-mm-dd',//显示格式
-        minView: "month",//设置只显示到月份
-        initialDate: new Date(),//初始化当前日期
-        autoclose: true,//选中自动关闭
-        todayBtn: true//显示今日按钮
-    });
 </script>
 </html>

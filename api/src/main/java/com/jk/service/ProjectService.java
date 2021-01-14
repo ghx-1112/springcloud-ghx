@@ -27,4 +27,10 @@ public interface ProjectService {
 
     @RequestMapping("project/findStageByProId")
     List<StageBean> findStageByProId(@RequestParam Integer proid);
+
+    @RequestMapping("project/delProByProId")
+    void delProByProId(@RequestParam Integer proid);
+
+    @RequestMapping("project/findStageById")
+    StageBean findStageById(@RequestParam Integer id);
 }

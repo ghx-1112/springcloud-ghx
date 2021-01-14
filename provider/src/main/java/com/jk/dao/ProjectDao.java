@@ -23,4 +23,12 @@ public interface ProjectDao {
     ProjectBean findProjectById(Integer proid);
 
     List<StageBean> findStageByProId(Integer proid);
+
+    void delProByProId(Integer proid);
+
+    void delStageByProId(Integer proid);
+
+    StageBean findStageById(Integer id);
+
+    void addProjectStage(ProjectBean projectBean);
 }

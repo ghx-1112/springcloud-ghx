@@ -27,14 +27,19 @@
 <div style="border-color: #ddd;border-width: 1px;">
     <div class="container-fluid">
         <form id="userForm">
-            <input type="hidden" name="proid" id="proid">
+            <input  name="id" id="id">
             <div class="form-group">
                 <div class="row">
                     <div class="col-md-2">
-                        <label for="stage">序号:</label>
+                        <label for="stage">阶段选择:</label>
                     </div>
                     <div class="col-md-4">
-                        <input type="text" class="form-control" id="stage" name="stage" placeholder="输入项目编号">
+                        <select type="text" class="form-control" id="stage" name="stage">
+                            <option value="需求对接">需求对接</option>
+                            <option value="需求分析">需求分析</option>
+                            <option value="产品分析">产品分析</option>
+                            <option value="项目完成">项目完成</option>
+                        </select>
                     </div>
                 </div>
             </div>
@@ -45,6 +50,16 @@
                     </div>
                     <div class="col-md-4">
                         <input type="text" class="form-control date" id="stadate" name="stadate">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-2">
+                        <label for="stadate">完成日期:</label>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="text" class="form-control date" id="completion" name="completion">
                     </div>
                 </div>
             </div>

@@ -131,41 +131,7 @@
         del(ids);
     }
 
-    function del(id){
-        bootbox.confirm({
-            size: "small",
-            title:"提示",
-            message: "是否确认删除?",
-            buttons: {
-                confirm: {
-                    label: '确定',
-                    className: 'btn-success'
-                },
-                cancel: {
-                    label: '取消',
-                    className: 'btn-danger'
-                }
-            },
-            callback: function(result){
-                if(result){
-                    $.ajax({
-                        url:"<%=path%>/test/delmovic.do",
-                        type:"post",
-                        data:{ids:id},
-                        success:function(){
-                            bootbox.alert({
-                                size: "small",
-                                title: "提示",
-                                message: "删除成功！！！",
-                                callback: function(){}
-                            });
-                            searMovic();
-                        }
-                    });
-                }
-            }
-        })
-    }
+
 
     function goumai(lotid) {
         bootbox.dialog({
@@ -211,7 +177,43 @@
         })
 
     }
-    
+
+
+    //删除项目
+    function delPro(proid){
+        bootbox.confirm({
+            size: "small",
+            title:"提示",
+            message: "是否确认删除?",
+            buttons: {
+                confirm: {
+                    label: '确定',
+                    className: 'btn-success'
+                },
+                cancel: {
+                    label: '取消',
+                    className: 'btn-danger'
+                }
+            },
+            callback: function(result){
+                if(result){
+                    $.ajax({
+                        url:"../project/delProByProId",
+                        data:{proid:proid},
+                        success:function(){
+                            bootbox.alert({
+                                size: "small",
+                                title: "提示",
+                                message: "删除成功！！！",
+                                callback: function(){}
+                            });
+                            searchProject();
+                        }
+                    });
+                }
+            }
+        })
+    }
 
     var res;
     function createAddContent(url){
@@ -230,8 +232,12 @@
     }
 
     //跳转新增页
-    function openProject(){
-        location.href="../page/toproadd";
+    function openProject(proid){
+        if (proid ==null){//新增
+            location.href="../page/toproadd?proid="+-1;
+        }else { //跟进
+            location.href="../page/toproadd?proid="+proid;
+        }
     }
 
     function searchProject(){
@@ -242,9 +248,9 @@
             url:"../project/findProjectPage",
             toolbar:'#toolbar',
             pagination:true,
-            pageList:[5,10,15,20],
+            pageList:[10,20],
             pageNumber:1,
-            pageSize:5,
+            pageSize:10,
             sidePagination:"server",
             queryParams:function(){
                 return{
@@ -275,8 +281,8 @@
                 {field:"prostartdate",title:"开始日期"},
                 {field:"xx",title:"操作",formatter:function(value,rows,index){
                         var str ="";
-                            str += "  <a href='javascript:goumai("+rows.proid+")'>跟进</a>";
-                            str += "  <a href='javascript:tui("+rows.proid+")'>删除</a>";
+                            str += "  <a href='javascript:openProject("+rows.proid+")'>跟进</a>";
+                            str += "  <a href='javascript:delPro("+rows.proid+")'>删除</a>";
                             str += "  <a href='javascript:findProjectInfo("+rows.proid+")'>详情</a>";
                         return str;
                     }}

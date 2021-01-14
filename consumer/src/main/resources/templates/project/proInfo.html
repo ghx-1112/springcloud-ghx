@@ -26,15 +26,20 @@
         .btn{
             margin-right: 30px;
         }
+        .col-md-1{
+            width: 120px;
+        }
     </style>
 
 </head>
 <body>
 <nav class="navbar navbar-default">
     <div class="container-fluid">
+        <h4 class="navbar-text navbar-left glyphicon glyphicon-bookmark" style="margin-top: 20px">详情</h4>
         <p class="navbar-text navbar-right">
             <button type="button" onclick="cancel()" class="btn btn-success glyphicon glyphicon-search">取消</button>
             <button type="button" onclick="addProject()" class="btn btn-warning glyphicon glyphicon-plus">保存</button>
+        </p>
     </div>
 </nav>
 <div style="border-color: #ddd;border-width: 1px;">
@@ -177,13 +182,8 @@
                 {field:"id",title:"序号"},
                 {field:"stage",title:"阶段"},
                 {field:"stadate",title:"开始日期"},
+                {field:"completion",title:"完成日期"},
                 {field:"seeto",title:"阶段负责人"},
-                {field:"xx",title:"操作",formatter:function(value,rows,index){
-                        var str ="";
-                        str = "<a href='javascript:goumai("+rows.lotid+")'>删除</a>";
-                        str = "<a href='javascript:tui("+rows.lotid+")'>修改</a>";
-                        return str;
-                    }}
             ]
         })
     }
