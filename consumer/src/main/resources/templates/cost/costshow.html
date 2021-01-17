@@ -29,7 +29,7 @@
                 <label for="pronumber">项目编号：</label>
                 <input type="text" class="form-control" id="pronumber" placeholder="项目编号">
                 <label>项目状态：</label>
-                <select type="text" id="prostatus" class="form-control">
+                <select type="text" id="status" class="form-control">
                     <option value="0">--请选择--</option>
                     <option value="1">进行中</option>
                     <option value="2">已完成</option>
@@ -40,7 +40,7 @@
             <button type="button" onclick="openProject()" class="btn btn-warning glyphicon glyphicon-plus">新增</button>
         </form>
     </div>
-    <table class="table" id="proTable"></table>
+    <table class="table" id="costTable"></table>
 </body>
 
 <script type="text/javascript">
@@ -109,11 +109,11 @@
     }
 
     function searchProject(){
-        $("#proTable").bootstrapTable("refresh")
+        $("#costTable").bootstrapTable("refresh")
     }
     function initProjectTable(){
-        $("#proTable").bootstrapTable({
-            url:"../project/findProjectPage",
+        $("#costTable").bootstrapTable({
+            url:"../cost/findCostPage",
             toolbar:'#toolbar',
             pagination:true,
             pageList:[10,20],
@@ -124,33 +124,29 @@
                 return{
                     page:this.pageNumber,
                     rows:this.pageSize,
-                    pronumber: $("#pronumber").val(),
-                    prostatus: $("#prostatus").val()
+                    name: $("#name").val(),
+                    status: $("#status").val()
                 };
             },
             columns:[
                 {checkbox:true},
-                {field:"proid",title:"序号"},
-                {field:"pronumber",title:"项目编号"},
-                {field:"proname",title:"项目名称"},
-                {field:"proprincipal",title:"项目负责人"},
-                {field:"procurrent",title:"当前阶段"},
-                {field:"prostatus",title:"项目状态",formatter:function(value,rows,index){
-                    if (value == 1){
-                        return "进行中";
-                    }
-                    if (value == 2){
-                        return "已完成";
-                    }
-                    if (value == 3){
-                        return "已延迟";
-                    }
+                {field:"id",title:"序号"},
+                {field:"type",title:"报销类型"},
+                {field:"money",title:"金额（元）"},
+                {field:"name",title:"报销人"},
+                {field:"status",title:"状态",formatter:function(value,rows,index){
+                        if (value == 1){
+                            return "未报销";
+                        }
+                        if (value == 2){
+                            return "已完成";
+                        }
                     }},
-                {field:"prostartdate",title:"开始日期"},
+                {field:"date",title:"报销日期"},
                 {field:"xx",title:"操作",formatter:function(value,rows,index){
                         var str ="";
-                            str += "  <a href='javascript:openProject("+rows.proid+")'>跟进</a>";
-                            str += "  <a href='javascript:delPro("+rows.proid+")'>删除</a>";
+                            str += "  <a href='javascript:openProject("+rows.proid+")'>完成报销</a>";
+                            str += "  <a href='javascript:delPro("+rows.proid+")'>修改</a>";
                             str += "  <a href='javascript:findProjectInfo("+rows.proid+")'>详情</a>";
                         return str;
                     }}

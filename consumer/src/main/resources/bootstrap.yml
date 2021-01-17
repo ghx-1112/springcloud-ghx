@@ -1,0 +1,20 @@
+server:
+  port: 8763
+
+spring:
+  application:
+    name: client‐ribbon
+  cloud:
+    config:
+      #指明使用的环境，测试、开发、生产（正式）
+      profile: dev
+      discovery:
+        #从配置中心读取文件，默认是false
+        enabled: true
+        #配置中心的servieId，即服务名
+        service-id: config-server
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
