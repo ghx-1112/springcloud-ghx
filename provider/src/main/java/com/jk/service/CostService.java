@@ -11,4 +11,6 @@ public interface CostService {
     void addCost(CostBean costBean);
 
     CostBean findCostById(String id);
+
+    void accomplish(String id);
 }

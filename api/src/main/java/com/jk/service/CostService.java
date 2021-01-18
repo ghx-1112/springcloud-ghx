@@ -18,4 +18,6 @@ public interface CostService {
     void addCost( CostBean costBean);
     @RequestMapping("cost/findCostById")
     CostBean findCostById(@RequestParam String id);
+    @RequestMapping("cost/accomplish")
+    void accomplish(@RequestParam String id);
 }

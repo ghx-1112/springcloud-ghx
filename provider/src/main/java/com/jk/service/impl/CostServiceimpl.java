@@ -45,12 +45,21 @@ public class CostServiceimpl implements CostService {
 
     @Override
     public void addCost(CostBean costBean) {
-        costBean.setStatus(1);
+        if (costBean.getId()==null){
+            costBean.setStatus(1);
+        }
         mongoTemplate.save(costBean);
     }
 
     @Override
     public CostBean findCostById(String id) {
         return mongoTemplate.findById(id,CostBean.class);
+    }
+
+    @Override
+    public void accomplish(String id) {
+        CostBean byId = mongoTemplate.findById(id, CostBean.class);
+        byId.setStatus(2);//状态(1: 未报销,2:已报销)
+        mongoTemplate.save(byId);
     }
 }

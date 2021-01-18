@@ -52,4 +52,15 @@ public class CostController {
     public CostBean findCostById(String id){
         return costService.findCostById(id);
     }
+    /**
+     * @Author: ghx
+     * @Description: 完成报销
+     * @Date: 2021/1/18 14:13
+      * @param id
+     * @Return: void
+     **/
+    @RequestMapping("accomplish")
+    public void accomplish(String id){
+        costService.accomplish(id);
+    }
 }

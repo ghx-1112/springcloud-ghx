@@ -69,13 +69,14 @@ public class PageController {
     }
     /**
      * @Author: ghx
-     * @Description: 跳转费用管理新增页面
+     * @Description: 跳转费用管理新增页面/修改
      * @Date: 2021/1/18 9:46
       * @param
      * @Return: java.lang.String
      **/
     @RequestMapping("toCostadd")
-    public String toCostadd(Integer id,Model model){
+    public String toCostadd(String id,Model model){
+        model.addAttribute("id",id);
         return "cost/addcost";
     }
 
