@@ -55,4 +55,41 @@ public class PageController {
         model.addAttribute("proid",proid);
         return "project/proInfo";
     }
+
+    /**
+     * @Author: ghx
+     * @Description: 跳转费用管理列表页面
+     * @Date: 2021/1/18 9:45
+      * @param
+     * @Return: java.lang.String
+     **/
+    @RequestMapping("toCostshow")
+    public String toCostshow(){
+        return "cost/costshow";
+    }
+    /**
+     * @Author: ghx
+     * @Description: 跳转费用管理新增页面
+     * @Date: 2021/1/18 9:46
+      * @param
+     * @Return: java.lang.String
+     **/
+    @RequestMapping("toCostadd")
+    public String toCostadd(Integer id,Model model){
+        return "cost/addcost";
+    }
+
+    /**
+     * @Author: ghx
+     * @Description: 跳转费用详情页面
+     * @Date: 2021/1/18 11:33
+      * @param id
+     * @param model
+     * @Return: java.lang.String
+     **/
+    @RequestMapping("toCostInfo")
+    public String toCostInfo(String id,Model model){
+        model.addAttribute("cid",id);
+        return "cost/costInfo";
+    }
 }

@@ -26,18 +26,17 @@
     <div id="toolbar">
         <form class="form-inline">
             <div class="form-group">
-                <label for="pronumber">项目编号：</label>
-                <input type="text" class="form-control" id="pronumber" placeholder="项目编号">
+                <label for="name">报销人：</label>
+                <input type="text" class="form-control" id="name" placeholder="输入姓名">
                 <label>项目状态：</label>
                 <select type="text" id="status" class="form-control">
-                    <option value="0">--请选择--</option>
-                    <option value="1">进行中</option>
+                    <option value="-1">--请选择--</option>
+                    <option value="1">未报销</option>
                     <option value="2">已完成</option>
-                    <option value="3">已延迟</option>
                 </select>
             </div>
             <button type="button" onclick="searchProject()" class="btn btn-success glyphicon glyphicon-search">搜索</button>
-            <button type="button" onclick="openProject()" class="btn btn-warning glyphicon glyphicon-plus">新增</button>
+            <button type="button" onclick="openCost()" class="btn btn-warning glyphicon glyphicon-plus">新增</button>
         </form>
     </div>
     <table class="table" id="costTable"></table>
@@ -45,7 +44,7 @@
 
 <script type="text/javascript">
     $(function(){
-        initProjectTable();
+        initCostTable();
     })
     //删除项目
     function delPro(proid){
@@ -94,24 +93,30 @@
         });
         return res;
     }
+
+
+
+
+
+
     //跳转至详情页
-    function findProjectInfo(proid){
-        location.href="../page/toproInfo?proid="+proid;
+    function findCostInfo(id){
+        location.href="../page/toCostInfo?id="+id;
     }
 
     //跳转新增页
-    function openProject(proid){
-        if (proid ==null){//新增
-            location.href="../page/toproadd?proid="+-1;
+    function openCost(id){
+        if (id == null){//新增
+            location.href="../page/toCostadd";
         }else { //跟进
-            location.href="../page/toproadd?proid="+proid;
+            location.href="../page/toCostadd?id="+id;
         }
     }
 
     function searchProject(){
         $("#costTable").bootstrapTable("refresh")
     }
-    function initProjectTable(){
+    function initCostTable(){
         $("#costTable").bootstrapTable({
             url:"../cost/findCostPage",
             toolbar:'#toolbar',
@@ -146,8 +151,8 @@
                 {field:"xx",title:"操作",formatter:function(value,rows,index){
                         var str ="";
                             str += "  <a href='javascript:openProject("+rows.proid+")'>完成报销</a>";
-                            str += "  <a href='javascript:delPro("+rows.proid+")'>修改</a>";
-                            str += "  <a href='javascript:findProjectInfo("+rows.proid+")'>详情</a>";
+                            str += "  <a href='javascript:delPro("+rows.id+")'>修改</a>";
+                            str += "  <a href='javascript:findCostInfo(\""+rows.id+"\")'>详情</a>";
                         return str;
                     }}
             ]

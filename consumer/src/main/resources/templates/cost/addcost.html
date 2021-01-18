@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- 引入bootstap的css文件 -->
+    <link rel="stylesheet" href="../js/bootstrap/bootstrap3/css/bootstrap.css">
+    <link rel="stylesheet" href="../js/bootstrap/bootstrap3/css/bootstrap-theme.css">
+
+    <!-- 引入jquery文件 -->
+    <script type="text/javascript" src="../js/jquery.min.js"></script>
+    <!-- 引入bootstrap的js文件 -->
+    <script type="text/javascript" src="../js/bootstrap/bootstrap3/js/bootstrap.min.js"></script>
+    <!-- 引入弹框的js文件 -->
+    <script type="text/javascript" src="../js/bootstrap/bootstrap-bootbox/bootbox.js"></script>
+    <!-- 引入表格的css和js文件 -->
+    <link rel="stylesheet" href="../js/bootstrap/bootstrap-table/bootstrap-table.css">
+    <script src="../js/bootstrap/bootstrap-table/bootstrap-table.js"></script>
+    <script src="../js/bootstrap/bootstrap-table/locale/bootstrap-table-zh-CN.js"></script>
+
+    <script src="../js/bootstrap/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+    <script src="../js/bootstrap/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+    <link rel="stylesheet" href="../js/bootstrap/bootstrap-datetimepicker/css/bootstrap-datetimepicker.css">
+</head>
+<body>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <p class="navbar-text navbar-right">
+            <button type="button" onclick="cancel()" class="btn btn-success glyphicon glyphicon-search">取消</button>
+            <button type="button" onclick="addCost()" class="btn btn-warning glyphicon glyphicon-plus">保存</button>
+    </div>
+</nav>
+<div style="border-color: #ddd;border-width: 1px;">
+    <div class="container-fluid">
+        <form id="costForms">
+            <input type="hidden"  id="id">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-2">
+                        <label for="name">报销人:</label>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="text" class="form-control" id="name" name="name">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-2">
+                        <label>报销类型:</label>
+                    </div>
+                    <div class="col-md-4">
+                        <select type="text" class="form-control" id="type" name="type">
+                            <option value="1">餐费</option>
+                            <option value="2">其他费用</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-2">
+                        <label for="date">报销日期:</label>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="text" class="form-control date" id="date" name="date">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-2">
+                        <label for="money">报销金额:</label>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="text" name="money" id="money" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-2">
+                        <label for="info">报销说明:</label>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="text" name="info" id="info" class="form-control">
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+<script>
+
+
+    if ($("#sta").val() ==-1){
+
+    }else {
+
+    }
+    function addCost(){
+        $.ajax({
+            url:'../cost/addCost',//后台请求地址
+            type:'post',
+            data:$("#costForms").serialize(),//表单序列化
+            //dataType:'json',
+            success:function(){
+                bootbox.alert({
+                    size: "small",
+                    title: "提示",
+                    message: "成功",
+                    callback: function(){
+                        return;
+                    }
+                });
+
+                cancel();
+            }
+        });
+    }
+
+    //取消
+    function cancel() {
+        location.href="../page/toCostshow";
+    }
+    $('.date').datetimepicker({
+        language: 'zh-CN',//显示中文
+        format: 'yyyy-mm-dd',//显示格式
+        minView: "month",//设置只显示到月份
+        initialDate: new Date(),//初始化当前日期
+        autoclose: true,//选中自动关闭
+        todayBtn: true//显示今日按钮
+    });
+</script>
+</html>

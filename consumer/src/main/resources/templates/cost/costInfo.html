@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- 引入bootstap的css文件 -->
+    <link rel="stylesheet" href="../js/bootstrap/bootstrap3/css/bootstrap.css">
+    <link rel="stylesheet" href="../js/bootstrap/bootstrap3/css/bootstrap-theme.css">
+
+    <!-- 引入jquery文件 -->
+    <script type="text/javascript" src="../js/jquery.min.js"></script>
+    <!-- 引入bootstrap的js文件 -->
+    <script type="text/javascript" src="../js/bootstrap/bootstrap3/js/bootstrap.min.js"></script>
+    <!-- 引入弹框的js文件 -->
+    <script type="text/javascript" src="../js/bootstrap/bootstrap-bootbox/bootbox.js"></script>
+    <!-- 引入表格的css和js文件 -->
+    <link rel="stylesheet" href="../js/bootstrap/bootstrap-table/bootstrap-table.css">
+    <script src="../js/bootstrap/bootstrap-table/bootstrap-table.js"></script>
+    <script src="../js/bootstrap/bootstrap-table/locale/bootstrap-table-zh-CN.js"></script>
+
+    <script src="../js/bootstrap/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+    <script src="../js/bootstrap/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+    <link rel="stylesheet" href="../js/bootstrap/bootstrap-datetimepicker/css/bootstrap-datetimepicker.css">
+
+    <style>
+        .btn{
+            margin-right: 30px;
+        }
+        .col-md-1{
+            width: 120px;
+        }
+    </style>
+
+</head>
+<body>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <h4 class="navbar-text navbar-left glyphicon glyphicon-bookmark" style="margin-top: 20px">详情</h4>
+        <p class="navbar-text navbar-right">
+            <button type="button" onclick="cancel()" class="btn btn-success glyphicon glyphicon-search">取消</button>
+        </p>
+    </div>
+</nav>
+<div style="border-color: #ddd;border-width: 1px;">
+    <div class="container-fluid">
+        <form id="costForm">
+            <input type="hidden" th:value="${cid}" id="id">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-1">
+                        <label for="name">报销人:</label>
+                    </div>
+                    <div class="col-md-4">
+                        <span id="name"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-1">
+                        <label for="type">报销类型:</label>
+                    </div>
+                    <div class="col-md-4">
+                        <span id="type"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-1">
+                        <label>报销日期:</label>
+                    </div>
+                    <div class="col-md-4">
+                        <span id="date"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-1">
+                        <label>报销金额:</label>
+                    </div>
+                    <div class="col-md-4">
+                        <span id="money"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-1">
+                        <label>报销状态:</label>
+                    </div>
+                    <div class="col-md-2">
+                        <span id="status"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-1">
+                        <label>备注说明:</label>
+                    </div>
+                    <div class="col-md-2">
+                        <span id="info"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-1">
+                    </div>
+                    <div class="col-md-10">
+                        <font color="red">*请财务人员注意，已完成的报销，请于本系统内反馈【已完成】状态</font>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+<script>
+
+    $(function (){
+        initCostById(); //初始化加载项目详情
+    })
+
+    //取消
+    function cancel() {
+        location.href="../page/toCostshow";
+    }
+
+    //初始化加载项目详情
+    function initCostById(){
+        $.ajax({
+            url: "../cost/findCostById",
+            data:{id:$("#id").val()},
+            success:function (data){
+                $("#type").text(data.type)
+                $("#money").text(data.money)
+                $("#name").text(data.name)
+                $("#status").text(data.status)
+                $("#date").text(data.date)
+                $("#info").text(data.info)
+            }
+        })
+    }
+
+
+    $('.date').datetimepicker({
+        language: 'zh-CN',//显示中文
+        format: 'yyyy-mm-dd',//显示格式
+        minView: "month",//设置只显示到月份
+        initialDate: new Date(),//初始化当前日期
+        autoclose: true,//选中自动关闭
+        todayBtn: true//显示今日按钮
+    });
+</script>
+</html>

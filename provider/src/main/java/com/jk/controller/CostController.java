@@ -32,4 +32,28 @@ public class CostController {
     public HashMap<String,Object> findCostPage(Integer page, Integer rows,@RequestBody CostBean costBean){
         return costService.findCostPage(page,rows,costBean);
     }
+
+    /**
+     * @Author: ghx
+     * @Description: 生产者 新增账单
+     * @Date: 2021/1/18 10:24
+     * @param costBean
+     * @Return: void
+     **/
+    @RequestMapping("addCost")
+    public void addCost(@RequestBody CostBean costBean){
+        costService.addCost(costBean);
+    }
+
+    /**
+     * @Author: ghx
+     * @Description: 生产者 根据id查询费用详情
+     * @Date: 2021/1/18 11:43
+     * @param id
+     * @Return: com.jk.pojo.CostBean
+     **/
+    @RequestMapping("findCostById")
+    public CostBean findCostById(String id){
+        return costService.findCostById(id);
+    }
 }

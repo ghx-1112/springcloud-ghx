@@ -1,6 +1,5 @@
 package com.jk.service.impl;
 
-import com.jk.dao.CostDao;
 import com.jk.pojo.CostBean;
 import com.jk.service.CostService;
 import org.apache.commons.lang.StringUtils;
@@ -17,9 +16,6 @@ import java.util.List;
 public class CostServiceimpl implements CostService {
 
     @Autowired
-    private CostDao costDao;
-
-    @Autowired
     private MongoTemplate mongoTemplate;
 
     @Override
@@ -29,7 +25,7 @@ public class CostServiceimpl implements CostService {
         if(!StringUtils.isEmpty(costBean.getName())){
             query.addCriteria(Criteria.where("name").in(costBean.getName()));
         }
-        if(costBean.getStatus()!=null){
+        if(costBean.getStatus()!=null & costBean.getStatus()!=-1){
             query.addCriteria(Criteria.where("status").is(costBean.getStatus()));
         }
 
@@ -45,5 +41,16 @@ public class CostServiceimpl implements CostService {
         map.put("total",total);
         map.put("rows",list);
         return map;
+    }
+
+    @Override
+    public void addCost(CostBean costBean) {
+        costBean.setStatus(1);
+        mongoTemplate.save(costBean);
+    }
+
+    @Override
+    public CostBean findCostById(String id) {
+        return mongoTemplate.findById(id,CostBean.class);
     }
 }

@@ -9,6 +9,10 @@ spring:
     url: jdbc:mysql://localhost:3306/20066
     username: root
     password: root
+  #连接Mongodb
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/20065
   #redis连接
   redis:
     host: 127.0.0.1
@@ -22,6 +26,8 @@ spring:
         min-idle: 0
     lettuce:
       shutdown-timeout: 0
+  main:
+    allow-bean-definition-overriding: true
 eureka:
   client:
     serviceUrl:

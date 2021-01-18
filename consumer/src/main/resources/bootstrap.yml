@@ -4,6 +4,8 @@ server:
 spring:
   application:
     name: client‐ribbon
+  main:
+    allow-bean-definition-overriding: true
   cloud:
     config:
       #指明使用的环境，测试、开发、生产（正式）
